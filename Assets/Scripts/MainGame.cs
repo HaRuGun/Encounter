@@ -22,6 +22,10 @@ public class MainGame : MonoBehaviour
     public Slider FriendshipSlider;
     public GameObject HintButton;
 
+    public GameObject CorrectCircle;
+    public GameObject WrongCircle;
+    public GameObject WrongCircle2;
+
     public Text ForeignerText;
     public Text Answer1Text;
     public Text Answer2Text;
@@ -41,6 +45,7 @@ public class MainGame : MonoBehaviour
     public float currentTime;
     public float freindship;
     public int hint;
+    public bool checkAnimation;
 
     public float checkTime;
 
@@ -52,7 +57,7 @@ public class MainGame : MonoBehaviour
 
         nowQuestion = 0;
 
-        totalTime = 10.0f;
+        totalTime = 60.0f;
         currentTime = 3.0f;
         freindship = 50.0f;
         hint = 3;
@@ -66,26 +71,51 @@ public class MainGame : MonoBehaviour
     public void Update()
     {
         CheckTimer();
-        //CheckFreindship();
+        CheckFreindship();
         CheckAnswer();
-        AddFriednShip();
     }
 
-    public void AddFriednShip() {
+    public void AddFriednShip()
+    {
         freindship += 10.0f;
-        FriendshipSlider.value = Mathf.MoveTowards(50.0f, 100.0f, 10.0f);
+        FriendshipSlider.value = freindship;
         FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
     }
 
     public void MinusFriednShip()
     {
         freindship -= 10.0f;
-        FriendshipSlider.value = Mathf.MoveTowards(50.0f, 100.0f, -10.0f);
+        FriendshipSlider.value = freindship;
         FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
     }
 
-    public void HintClick() {
-        HintButton.GetComponentInChildren<Text>().text = "2";
+    public void HintClick()
+    {
+        if (hint <= 0)
+            return;
+
+        hint -= 1;
+        HintButton.GetComponentInChildren<Text>().text = hint.ToString();
+        
+        int rand = Random.Range(0, 3);
+        while(questionArr[rand] == 0)
+            rand = Random.Range(0, 3);
+
+        switch (rand)
+        {
+            case 0:
+                Answer1Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                break;
+            case 1:
+                Answer2Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                break;
+            case 2:
+                Answer3Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                break;
+        }
+
+        if (hint <= 0)
+            HintButton.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
     }
 
     public void CheckFreindship()
@@ -102,6 +132,9 @@ public class MainGame : MonoBehaviour
 
     public void CheckTimer()
     {
+        if (checkAnimation)
+            return;
+
         checkTime += Time.deltaTime;
         TimerSlider.value = checkTime / currentTime;
 
@@ -119,9 +152,12 @@ public class MainGame : MonoBehaviour
 
     public void CheckAnswer()
     {
-        if (AnswerScript.choice == 4)
+        if (checkAnimation)
             return;
 
+        if (AnswerScript.choice == 4)
+            return;
+        
         if (questionArr[AnswerScript.choice] == 0)
             CorrectAnswer();
         else
@@ -147,13 +183,47 @@ public class MainGame : MonoBehaviour
         }
         
         Answer1Text.text = listQaA[nowQuestion].answerText[questionArr[0]];
+        Answer1Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         Answer2Text.text = listQaA[nowQuestion].answerText[questionArr[1]];
+        Answer2Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         Answer3Text.text = listQaA[nowQuestion].answerText[questionArr[2]];
+        Answer3Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+        for (int i = 2; i >= 0; --i)
+        {
+            if (questionArr[i] == 0)
+            {
+                CorrectCircle.transform.position = new Vector3(0.0f, (-1.6f * i) - 0.75f, -1.0f);
+
+                int j = i + 1;
+                if (j > 2) j = 0;
+                WrongCircle.transform.position = new Vector3(0.0f, (-1.6f * j) - 0.75f, -1.0f);
+
+                int k = i - 1;
+                if (k < 0) k = 2;
+                WrongCircle2.transform.position = new Vector3(0.0f, (-1.6f * k) - 0.75f, -1.0f);
+            }
+        }
     }
 
     public void CorrectAnswer()
     {
-        freindship += 1;
+        StartCoroutine(Correct());
+    }
+
+    IEnumerator Correct()
+    {
+        checkAnimation = true;
+
+        CorrectCircle.SetActive(true);
+        yield return new WaitForSeconds(0.1f * totalTime / 60.0f);
+        CorrectCircle.SetActive(false);
+        yield return new WaitForSeconds(0.1f * totalTime / 60.0f);
+        CorrectCircle.SetActive(true);
+        yield return new WaitForSeconds(0.3f * totalTime / 60.0f);
+        CorrectCircle.SetActive(false);
+
+        AddFriednShip();
         checkTime = 0.0f;
         if (currentTime >= totalTime)
         {
@@ -161,11 +231,28 @@ public class MainGame : MonoBehaviour
         }
         AnswerScript.Reset();
         Ask();
+
+        checkAnimation = false;
     }
 
     public void WrongAnswer()
     {
-        freindship -= 1;
+        StartCoroutine(Wrong());
+    }
+
+    IEnumerator Wrong()
+    {
+        checkAnimation = true;
+
+        WrongCircle.SetActive(true);
+        WrongCircle2.SetActive(true);
+        CorrectCircle.SetActive(true);
+        yield return new WaitForSeconds(0.5f * totalTime / 60.0f);
+        WrongCircle.SetActive(false);
+        WrongCircle2.SetActive(false);
+        CorrectCircle.SetActive(false);
+
+        MinusFriednShip();
         checkTime = 0.0f;
         if (currentTime >= totalTime)
         {
@@ -173,6 +260,8 @@ public class MainGame : MonoBehaviour
         }
         AnswerScript.Reset();
         Ask();
+
+        checkAnimation = false;
     }
 
     public void XmlToList(XmlDocument xmlDoc)
