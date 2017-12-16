@@ -17,7 +17,9 @@ public class DataManager : MonoBehaviour {
     // Resources/XML/TestItem.XML 파일.
     string xmlFileName = "QaAItem";
 
-    void Start()
+    public XmlDocument xml;
+
+    public void Init()
     {
         LoadXML(xmlFileName);
     }
@@ -49,6 +51,8 @@ public class DataManager : MonoBehaviour {
             Debug.Log("[at once] answerText3 : " + qaA.SelectSingleNode("answerText3").InnerText);
             
         }
+
+        xml = xmlDoc;
     }
 
 }
