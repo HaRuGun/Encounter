@@ -10,8 +10,15 @@ public class ResultManagerScr : MonoBehaviour {
     public GameObject Result1;
     public GameObject Result2;
     public GameObject Result3;
+    public GameObject RestartBtn;
 
     int resultType;  //  depending on friendship: 1, 2, 3
+
+    IEnumerator ShowRestartBtn()
+    {
+        yield return new WaitForSeconds(6.0f);
+        RestartBtn.SetActive(true);
+    }
 
     public void FinalConfrim()
     {
@@ -32,6 +39,7 @@ public class ResultManagerScr : MonoBehaviour {
                 ShowResult3();
                 break;
         }
+        StartCoroutine(ShowRestartBtn());
     }
 
     public void ShowResult1()
