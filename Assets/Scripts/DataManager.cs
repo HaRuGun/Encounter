@@ -6,7 +6,7 @@ using System.Xml; //xml을 사용하기위해
 public class DataManager : MonoBehaviour {
 
     // Resources/XML/TestItem.XML 파일.
-    string xmlFileName = "QaAItem";
+    string xmlFileName = "QaAItem2";
 
     public XmlDocument xml;
 

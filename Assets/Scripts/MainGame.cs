@@ -177,7 +177,7 @@ public class MainGame : MonoBehaviour
 
     public void XmlToList(XmlDocument xmlDoc)
     {
-        XmlNodeList QaATables = xmlDoc.SelectNodes("dataroot/QaAItem");
+        XmlNodeList QaATables = xmlDoc.SelectNodes("dataroot/QaAItem2");
         foreach (XmlNode qaA in QaATables)
         {
             // 수량이 많으면 반복문 사용.
