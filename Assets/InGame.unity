@@ -147,8 +147,10 @@ MonoBehaviour:
   Answer1Text: {fileID: 1165462523}
   Answer2Text: {fileID: 890613580}
   Answer3Text: {fileID: 1770284094}
+  TotalTimeText: {fileID: 1505793372}
   dataManager: {fileID: 112149107}
   AnswerScript: {fileID: 2006347659}
+  TimerSlider: {fileID: 0}
   nowQuestion: 0
   totalTime: 60
   currentTime: 3
@@ -534,7 +536,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1273,7 +1275,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
