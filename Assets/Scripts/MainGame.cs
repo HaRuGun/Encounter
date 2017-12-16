@@ -26,10 +26,12 @@ public class MainGame : MonoBehaviour
     public Text Answer1Text;
     public Text Answer2Text;
     public Text Answer3Text;
+    public Text TotalTimeText;
     public Text FriendshipText;
 
     public DataManager dataManager;
     public Answer AnswerScript;
+    public Slider TimerSlider;
     int[] questionArr;
 
     private List<QaA> listQaA;
@@ -50,7 +52,7 @@ public class MainGame : MonoBehaviour
 
         nowQuestion = 0;
 
-        totalTime = 60.0f;
+        totalTime = 10.0f;
         currentTime = 3.0f;
         freindship = 50.0f;
         hint = 3;
@@ -58,16 +60,15 @@ public class MainGame : MonoBehaviour
         AnswerScript = Answer.GetComponent<Answer>();
 
         Ask();
-
-        AddFriednShip();
+        TimerSlider = Timer.GetComponent<Slider>();
     }
 
     public void Update()
     {
-        //CheckTimer();
+        CheckTimer();
         //CheckFreindship();
         CheckAnswer();
-        
+        AddFriednShip();
     }
 
     public void AddFriednShip() {
@@ -102,6 +103,10 @@ public class MainGame : MonoBehaviour
     public void CheckTimer()
     {
         checkTime += Time.deltaTime;
+        TimerSlider.value = checkTime / currentTime;
+
+        totalTime -= Time.deltaTime;
+        TotalTimeText.text = totalTime.ToString();
 
         if (checkTime >= currentTime)
             WrongAnswer();
@@ -118,13 +123,9 @@ public class MainGame : MonoBehaviour
             return;
 
         if (questionArr[AnswerScript.choice] == 0)
-        {
             CorrectAnswer();
-        }
         else
-        {
             WrongAnswer();
-        }
     }
 
     public void Ask()
@@ -153,7 +154,11 @@ public class MainGame : MonoBehaviour
     public void CorrectAnswer()
     {
         freindship += 1;
-        ResetTime();
+        checkTime = 0.0f;
+        if (currentTime >= totalTime)
+        {
+            currentTime = totalTime;
+        }
         AnswerScript.Reset();
         Ask();
     }
@@ -161,15 +166,13 @@ public class MainGame : MonoBehaviour
     public void WrongAnswer()
     {
         freindship -= 1;
-        ResetTime();
+        checkTime = 0.0f;
+        if (currentTime >= totalTime)
+        {
+            currentTime = totalTime;
+        }
         AnswerScript.Reset();
         Ask();
-    }
-
-    public void ResetTime()
-    {
-        totalTime -= checkTime;
-        checkTime = 0.0f;
     }
 
     public void XmlToList(XmlDocument xmlDoc)
