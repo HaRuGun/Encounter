@@ -19,22 +19,27 @@ public class MainGame : MonoBehaviour
     public GameObject Foreigner;
     public GameObject Answer;
     public GameObject Timer;
-    public Slider FriendshipSlider;
     public GameObject HintButton;
 
     public GameObject CorrectCircle;
     public GameObject WrongCircle;
     public GameObject WrongCircle2;
 
+    public GameObject FreindshipHandle;
+    public Slider FriendshipSlider;
+
+    public Text FriendshipText;
     public Text ForeignerText;
     public Text Answer1Text;
     public Text Answer2Text;
     public Text Answer3Text;
     public Text TotalTimeText;
-    public Text FriendshipText;
-
+    
     public Sprite NormalSprite;
     public Sprite HintSprite;
+    public Sprite GreenHand;
+    public Sprite YellowHand;
+    public Sprite RedHand;
 
     public DataManager dataManager;
     public Answer AnswerScript;
@@ -43,12 +48,15 @@ public class MainGame : MonoBehaviour
 
     private List<QaA> listQaA;
     public int nowQuestion;
+    public int difficulty;
+    public int prevDiff;
 
     public float totalTime;
     public float currentTime;
     public float freindship;
     public int hint;
     public bool checkAnimation;
+    public bool checkMoving;
 
     public float checkTime;
 
@@ -59,12 +67,17 @@ public class MainGame : MonoBehaviour
         XmlToList(dataManager.xml);
 
         nowQuestion = 0;
+        difficulty = 0;
+        prevDiff = difficulty;
 
         totalTime = 60.0f;
         currentTime = 5.0f;
         freindship = 50.0f;
         hint = 3;
         checkTime = 3.0f;
+
+        checkAnimation = false;
+        checkMoving = false;
 
         AnswerScript = Answer.GetComponent<Answer>();
 
@@ -83,14 +96,29 @@ public class MainGame : MonoBehaviour
     {
         freindship += 10.0f;
         FriendshipSlider.value = freindship;
-        FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
+        FriendshipText.text = System.Convert.ToInt32(freindship).ToString() + "%";
+
+        if (freindship <= 33.3f)
+            FreindshipHandle.GetComponent<Image>().sprite = RedHand;
+        if (33.3f < freindship && freindship <= 66.6f)
+            FreindshipHandle.GetComponent<Image>().sprite = YellowHand;
+        if (66.6f < freindship)
+            FreindshipHandle.GetComponent<Image>().sprite = GreenHand;
+
     }
 
     public void MinusFriednShip()
     {
         freindship -= 10.0f;
         FriendshipSlider.value = freindship;
-        FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
+        FriendshipText.text = System.Convert.ToInt32(freindship).ToString() + "%";
+
+        if (freindship <= 33.3f)
+            FreindshipHandle.GetComponent<Image>().sprite = RedHand;
+        if (33.3f < freindship && freindship <= 66.6f)
+            FreindshipHandle.GetComponent<Image>().sprite = YellowHand;
+        if (66.6f < freindship)
+            FreindshipHandle.GetComponent<Image>().sprite = GreenHand;
     }
 
     public void HintClick()
@@ -102,7 +130,7 @@ public class MainGame : MonoBehaviour
         HintButton.GetComponentInChildren<Text>().text = hint.ToString();
         
         int rand = Random.Range(0, 3);
-        while(questionArr[rand] == 0)
+        while(questionArr[rand] == 2)
             rand = Random.Range(0, 3);
 
         switch (rand)
@@ -127,7 +155,7 @@ public class MainGame : MonoBehaviour
 
     public void CheckFreindship()
     {
-        if (freindship >= 10)
+        if (freindship >= 100)
         {
             //GameClear
         }
@@ -139,7 +167,7 @@ public class MainGame : MonoBehaviour
 
     public void CheckTimer()
     {
-        if (checkAnimation)
+        if (checkAnimation || checkMoving)
             return;
 
         checkTime -= Time.deltaTime;
@@ -147,7 +175,7 @@ public class MainGame : MonoBehaviour
 
         totalTime -= Time.deltaTime;
 
-        TotalTimeText.text = totalTime.ToString("00.00").Replace(".", ":");
+        TotalTimeText.text = totalTime.ToString("00.0").Replace(".", ":");
 
         if (checkTime <= 0.0f)
             WrongAnswer();
@@ -166,7 +194,7 @@ public class MainGame : MonoBehaviour
         if (AnswerScript.choice == 4)
             return;
         
-        if (questionArr[AnswerScript.choice] == 0)
+        if (questionArr[AnswerScript.choice] == 2)
             CorrectAnswer();
         else
             WrongAnswer();
@@ -174,7 +202,30 @@ public class MainGame : MonoBehaviour
 
     public void Ask()
     {
-        nowQuestion = Random.Range(0, 90);
+        if (33.3f > freindship)
+            difficulty = 0;
+        if (66.6f > freindship && freindship >= 33.3f)
+            difficulty = 1;
+        if (freindship >= 66.6f)
+            difficulty = 2;
+
+        if (prevDiff != difficulty)
+            StartCoroutine(ChangeForeigner());
+        prevDiff = difficulty;
+
+
+        switch (difficulty)
+        {
+            case 0:
+                nowQuestion = Random.Range(0, 34);
+                break;
+            case 1:
+                nowQuestion = Random.Range(34, 67);
+                break;
+            case 2:
+                nowQuestion = Random.Range(67, 91);
+                break;
+        }
         ForeignerText.text = listQaA[nowQuestion].questionText;
 
         questionArr = new int[3];
@@ -203,17 +254,17 @@ public class MainGame : MonoBehaviour
 
         for (int i = 2; i >= 0; --i)
         {
-            if (questionArr[i] == 0)
+            if (questionArr[i] == 2)
             {
-                CorrectCircle.transform.position = new Vector3(0.0f, (-1.6f * i) - 0.75f, -1.0f);
+                CorrectCircle.transform.position = new Vector3(0.0f, (-1.4f * i) - 1.2f, -1.0f);
 
                 int j = i + 1;
                 if (j > 2) j = 0;
-                WrongCircle.transform.position = new Vector3(0.0f, (-1.6f * j) - 0.75f, -1.0f);
+                WrongCircle.transform.position = new Vector3(0.0f, (-1.4f * j) - 1.2f, -1.0f);
 
                 int k = i - 1;
                 if (k < 0) k = 2;
-                WrongCircle2.transform.position = new Vector3(0.0f, (-1.6f * k) - 0.75f, -1.0f);
+                WrongCircle2.transform.position = new Vector3(0.0f, (-1.4f * k) - 1.2f, -1.0f);
             }
         }
     }
@@ -226,6 +277,7 @@ public class MainGame : MonoBehaviour
     IEnumerator Correct()
     {
         checkAnimation = true;
+        Foreigner.GetComponent<Foreigner>().FaceSurprise();
 
         CorrectCircle.SetActive(true);
         yield return new WaitForSeconds(0.1f * totalTime / 60.0f);
@@ -244,6 +296,7 @@ public class MainGame : MonoBehaviour
         AnswerScript.Reset();
         Ask();
 
+        Foreigner.GetComponent<Foreigner>().FaceNormal();
         checkAnimation = false;
     }
 
@@ -255,14 +308,27 @@ public class MainGame : MonoBehaviour
     IEnumerator Wrong()
     {
         checkAnimation = true;
+        Foreigner.GetComponent<Foreigner>().FaceAngry();
 
-        WrongCircle.SetActive(true);
-        WrongCircle2.SetActive(true);
-        CorrectCircle.SetActive(true);
-        yield return new WaitForSeconds(0.5f * totalTime / 60.0f);
-        WrongCircle.SetActive(false);
-        WrongCircle2.SetActive(false);
-        CorrectCircle.SetActive(false);
+        float f = -1.2f + Answer.GetComponent<Answer>().choice * -1.4f;
+        float g = WrongCircle.transform.position.y;
+        float h = WrongCircle2.transform.position.y;
+
+        if (f == g)
+        {
+            WrongCircle.SetActive(true);
+            yield return new WaitForSeconds(0.5f * totalTime / 60.0f);
+            WrongCircle.SetActive(false);
+        }
+        if (f == h)
+        {
+            WrongCircle2.SetActive(true);
+            yield return new WaitForSeconds(0.5f * totalTime / 60.0f);
+            WrongCircle2.SetActive(false);
+        }
+        Debug.Log(Answer.GetComponent<Answer>().choice.ToString());
+        Debug.Log(WrongCircle.transform.position.y.ToString());
+        Debug.Log(WrongCircle2.transform.position.y.ToString());
 
         MinusFriednShip();
         checkTime = currentTime;
@@ -272,8 +338,28 @@ public class MainGame : MonoBehaviour
         }
         AnswerScript.Reset();
         Ask();
-
+        
+        Foreigner.GetComponent<Foreigner>().FaceNormal();
         checkAnimation = false;
+    }
+
+    IEnumerator ChangeForeigner()
+    {
+        checkMoving = true;
+        Foreigner.GetComponent<Animator>().enabled = true;
+
+        Foreigner.GetComponent<Animator>().Play("Foreigner2");
+        yield return new WaitForSeconds(1.0f);
+
+        Foreigner.GetComponent<Foreigner>().SetChar(difficulty);
+        
+        Foreigner.GetComponent<Animator>().Play("Foreigner1");
+        yield return new WaitForSeconds(1.0f);
+
+        Foreigner.GetComponent<Animator>().enabled = false;
+        checkMoving = false;
+
+        StopCoroutine(ChangeForeigner());
     }
 
     public void XmlToList(XmlDocument xmlDoc)
