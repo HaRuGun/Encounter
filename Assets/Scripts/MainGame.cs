@@ -33,6 +33,9 @@ public class MainGame : MonoBehaviour
     public Text TotalTimeText;
     public Text FriendshipText;
 
+    public Sprite NormalSprite;
+    public Sprite HintSprite;
+
     public DataManager dataManager;
     public Answer AnswerScript;
     public Slider TimerSlider;
@@ -49,7 +52,7 @@ public class MainGame : MonoBehaviour
 
     public float checkTime;
 
-    public void Start()
+    public void Awake()
     {
         listQaA = new List<QaA>();
         dataManager.GetComponent<DataManager>().Init();
@@ -58,9 +61,10 @@ public class MainGame : MonoBehaviour
         nowQuestion = 0;
 
         totalTime = 60.0f;
-        currentTime = 3.0f;
+        currentTime = 5.0f;
         freindship = 50.0f;
         hint = 3;
+        checkTime = 3.0f;
 
         AnswerScript = Answer.GetComponent<Answer>();
 
@@ -104,13 +108,16 @@ public class MainGame : MonoBehaviour
         switch (rand)
         {
             case 0:
-                Answer1Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                Answer1Text.GetComponentInParent<Image>().sprite = HintSprite;
+                Answer1Text.GetComponentInParent<Button>().enabled = false;
                 break;
             case 1:
-                Answer2Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                Answer2Text.GetComponentInParent<Image>().sprite = HintSprite;
+                Answer2Text.GetComponentInParent<Button>().enabled = false;
                 break;
             case 2:
-                Answer3Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                Answer3Text.GetComponentInParent<Image>().sprite = HintSprite;
+                Answer3Text.GetComponentInParent<Button>().enabled = false;
                 break;
         }
 
@@ -135,13 +142,14 @@ public class MainGame : MonoBehaviour
         if (checkAnimation)
             return;
 
-        checkTime += Time.deltaTime;
+        checkTime -= Time.deltaTime;
         TimerSlider.value = checkTime / currentTime;
 
         totalTime -= Time.deltaTime;
-        TotalTimeText.text = totalTime.ToString();
 
-        if (checkTime >= currentTime)
+        TotalTimeText.text = totalTime.ToString("00.00").Replace(".", ":");
+
+        if (checkTime <= 0.0f)
             WrongAnswer();
 
         if (totalTime <= 0.0f)
@@ -166,6 +174,7 @@ public class MainGame : MonoBehaviour
 
     public void Ask()
     {
+        nowQuestion = Random.Range(0, 90);
         ForeignerText.text = listQaA[nowQuestion].questionText;
 
         questionArr = new int[3];
@@ -183,11 +192,14 @@ public class MainGame : MonoBehaviour
         }
         
         Answer1Text.text = listQaA[nowQuestion].answerText[questionArr[0]];
-        Answer1Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Answer1Text.GetComponentInParent<Image>().sprite = NormalSprite;
+        Answer1Text.GetComponentInParent<Button>().enabled = true;
         Answer2Text.text = listQaA[nowQuestion].answerText[questionArr[1]];
-        Answer2Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Answer2Text.GetComponentInParent<Image>().sprite = NormalSprite;
+        Answer2Text.GetComponentInParent<Button>().enabled = true;
         Answer3Text.text = listQaA[nowQuestion].answerText[questionArr[2]];
-        Answer3Text.GetComponentInParent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Answer3Text.GetComponentInParent<Image>().sprite = NormalSprite;
+        Answer3Text.GetComponentInParent<Button>().enabled = true;
 
         for (int i = 2; i >= 0; --i)
         {
@@ -224,7 +236,7 @@ public class MainGame : MonoBehaviour
         CorrectCircle.SetActive(false);
 
         AddFriednShip();
-        checkTime = 0.0f;
+        checkTime = currentTime;
         if (currentTime >= totalTime)
         {
             currentTime = totalTime;
@@ -253,7 +265,7 @@ public class MainGame : MonoBehaviour
         CorrectCircle.SetActive(false);
 
         MinusFriednShip();
-        checkTime = 0.0f;
+        checkTime = currentTime;
         if (currentTime >= totalTime)
         {
             currentTime = totalTime;
@@ -266,17 +278,9 @@ public class MainGame : MonoBehaviour
 
     public void XmlToList(XmlDocument xmlDoc)
     {
-        XmlNodeList QaATables = xmlDoc.SelectNodes("dataroot/QaAItem2");
+        XmlNodeList QaATables = xmlDoc.SelectNodes("dataroot/QaAItem");
         foreach (XmlNode qaA in QaATables)
         {
-            // 수량이 많으면 반복문 사용.
-            Debug.Log("[at once] difficultyId :" + qaA.SelectSingleNode("difficultyId").InnerText);
-            Debug.Log("[at once] questionId : " + qaA.SelectSingleNode("questionId").InnerText);
-            Debug.Log("[at once] questionText : " + qaA.SelectSingleNode("questionText").InnerText);
-            Debug.Log("[at once] answerText1 : " + qaA.SelectSingleNode("answerText1").InnerText);
-            Debug.Log("[at once] answerText2 : " + qaA.SelectSingleNode("answerText2").InnerText);
-            Debug.Log("[at once] answerText3 : " + qaA.SelectSingleNode("answerText3").InnerText);
-
             QaA dest = new QaA();
             dest.difficultyId = System.Convert.ToInt32(qaA.SelectSingleNode("difficultyId").InnerText);
             dest.questionId = System.Convert.ToInt32(qaA.SelectSingleNode("questionId").InnerText);

@@ -22,6 +22,7 @@ public class DataManager : MonoBehaviour {
         Debug.Log(txtAsset.text);
         xmlDoc.LoadXml(txtAsset.text);
 
+        /*
         // 하나씩 가져오기 테스트 예제.
         XmlNodeList qaATable = xmlDoc.GetElementsByTagName("questionId");
         foreach (XmlNode qaA in qaATable)
@@ -39,9 +40,9 @@ public class DataManager : MonoBehaviour {
             Debug.Log("[at once] questionText : " + qaA.SelectSingleNode("questionText").InnerText);
             Debug.Log("[at once] answerText1 : " + qaA.SelectSingleNode("answerText1").InnerText);
             Debug.Log("[at once] answerText2 : " + qaA.SelectSingleNode("answerText2").InnerText);
-            Debug.Log("[at once] answerText3 : " + qaA.SelectSingleNode("answerText3").InnerText);
-            
+            Debug.Log("[at once] answerText3 : " + qaA.SelectSingleNode("answerText3").InnerText);  
         }
+        //*/
 
         xml = xmlDoc;
     }
