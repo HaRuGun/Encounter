@@ -19,12 +19,15 @@ public class MainGame : MonoBehaviour
     public GameObject Foreigner;
     public GameObject Answer;
     public GameObject Timer;
+    public Slider FriendshipSlider;
+    public GameObject HintButton;
 
     public Text ForeignerText;
     public Text Answer1Text;
     public Text Answer2Text;
     public Text Answer3Text;
     public Text TotalTimeText;
+    public Text FriendshipText;
 
     public DataManager dataManager;
     public Answer AnswerScript;
@@ -51,7 +54,7 @@ public class MainGame : MonoBehaviour
 
         totalTime = 10.0f;
         currentTime = 3.0f;
-        freindship = 0.0f;
+        freindship = 50.0f;
         hint = 3;
 
         AnswerScript = Answer.GetComponent<Answer>();
@@ -65,6 +68,24 @@ public class MainGame : MonoBehaviour
         CheckTimer();
         //CheckFreindship();
         CheckAnswer();
+        AddFriednShip();
+    }
+
+    public void AddFriednShip() {
+        freindship += 10.0f;
+        FriendshipSlider.value = Mathf.MoveTowards(50.0f, 100.0f, 10.0f);
+        FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
+    }
+
+    public void MinusFriednShip()
+    {
+        freindship -= 10.0f;
+        FriendshipSlider.value = Mathf.MoveTowards(50.0f, 100.0f, -10.0f);
+        FriendshipText.text = System.Convert.ToInt32(freindship).ToString();
+    }
+
+    public void HintClick() {
+        HintButton.GetComponentInChildren<Text>().text = "2";
     }
 
     public void CheckFreindship()
