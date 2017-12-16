@@ -128,7 +128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &350894365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -299,6 +299,18 @@ MonoBehaviour:
   musicSource: {fileID: 1272515920}
   lowPitchRange: 0.95
   highPitchRange: 1.05
+  TitleAudio: {fileID: 8300000, guid: ee6704cc7550c5943bf7df97590125ae, type: 3}
+  IngameAudio: {fileID: 8300000, guid: cb15550a871a31b48bcef097ee669569, type: 3}
+  GameoverAudio: {fileID: 8300000, guid: 9d38f7bb9b806c642bcf84979e6ad447, type: 3}
+  EndingAudio: {fileID: 8300000, guid: 02186440fe9e86645973af9d4612df83, type: 3}
+  ButtonAudio: {fileID: 8300000, guid: 88494a61a89693846aa8e84d2c825122, type: 3}
+  TrueAudio: {fileID: 8300000, guid: 58fc256d158fdef429f1f97fa2f8dbe6, type: 3}
+  FalseAudio: {fileID: 8300000, guid: 974c6a47e42c8114fb7208f7796976ac, type: 3}
+  HintAudio: {fileID: 8300000, guid: 7d1ecea70f1934642af06527d7446df8, type: 3}
+  StartInGameAudio: {fileID: 8300000, guid: 556be9e6bcbe0ca4f8590b8b0df60aa7, type: 3}
+  EndInGameAudio: {fileID: 8300000, guid: 905b38452a380964394d7bc9e6f4acef, type: 3}
+  ResultGameAudio1: {fileID: 8300000, guid: 8c021a2d4851c5247afcee1fad412741, type: 3}
+  ResultGameAudio2: {fileID: 8300000, guid: bbc7edc400a759940a8946d182873bd4, type: 3}
 --- !u!4 &1272515919
 Transform:
   m_ObjectHideFlags: 0
@@ -321,8 +333,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3b84668c1be37624784e6c531313d7b1, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: cb15550a871a31b48bcef097ee669569, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -401,8 +413,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 93c4adb427afec744b2222809208112a, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: ee6704cc7550c5943bf7df97590125ae, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -459,7 +471,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -595,7 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e722fcda7c49f1c49906eac4a4c886c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splashImage: {fileID: 2081987729}
+  splashImage: {fileID: 2104666591}
   loadLevel: InGame
 --- !u!4 &1544014190
 Transform:
@@ -682,8 +694,9 @@ GameObject:
   - component: {fileID: 2081987728}
   - component: {fileID: 2081987730}
   - component: {fileID: 2081987729}
+  - component: {fileID: 2081987731}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TouchToStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -696,7 +709,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2081987727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 20.5, y: -494.50003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1531444108}
@@ -704,8 +717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchoredPosition: {x: 20.5, y: -494.5}
+  m_SizeDelta: {x: 357.9, y: 112.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2081987729
 MonoBehaviour:
@@ -726,7 +739,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 256332c0b7cff1b4fa5d84374189b060, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1030d59982c267c4d90221d7ee0a8090, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -740,48 +753,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2081987727}
---- !u!1 &2104666588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2104666589}
-  - component: {fileID: 2104666592}
-  - component: {fileID: 2104666591}
-  - component: {fileID: 2104666590}
-  m_Layer: 5
-  m_Name: TouchSensor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2104666589
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2104666588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1531444108}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 720, y: 1280}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2104666590
+--- !u!114 &2081987731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2104666588}
+  m_GameObject: {fileID: 2081987727}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -826,8 +803,54 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1272515918}
+        m_MethodName: PlayButtonAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &2104666588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2104666589}
+  - component: {fileID: 2104666592}
+  - component: {fileID: 2104666591}
+  m_Layer: 5
+  m_Name: TouchSensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2104666589
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2104666588}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1531444108}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 720, y: 1280}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104666591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,15 +863,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: c8966ccf1e8ee06449f2ae3ee1fdc97a, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

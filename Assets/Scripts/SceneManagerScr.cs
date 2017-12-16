@@ -29,31 +29,57 @@ public class SceneManagerScr : MonoBehaviour {
     }
 
     IEnumerator Start() {
-        splashImage.canvasRenderer.SetAlpha(0.0f);
-        FadeIn();
-        yield return new WaitForSeconds(2.5f);
-        FadeOut();
-        yield return new WaitForSeconds(2.5f);
-        SceneManager.LoadScene(loadLevel);
+        //splashImage.canvasRenderer.SetAlpha(0.0f);
+        
+        splashImage.CrossFadeAlpha(1.0f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+        splashImage.CrossFadeAlpha(0.5f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+
+        splashImage.CrossFadeAlpha(1.0f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+        splashImage.CrossFadeAlpha(0.5f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+
+        splashImage.CrossFadeAlpha(1.0f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+        splashImage.CrossFadeAlpha(0.5f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+
+        splashImage.CrossFadeAlpha(1.0f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+        splashImage.CrossFadeAlpha(0.5f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+
+        splashImage.CrossFadeAlpha(1.0f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
+        splashImage.CrossFadeAlpha(0.5f, 1.0f, true);
+        yield return new WaitForSeconds(1.5f);
     }
 
     public void FadeIn() {
-        splashImage.CrossFadeAlpha(1.0f, 1.5f, false); 
+        splashImage.CrossFadeAlpha(0.5f, 1.3f, true); 
     }
 
     public void FadeOut(){
-        splashImage.CrossFadeAlpha(0.0f, 2.5f, false);
+        splashImage.CrossFadeAlpha(0.0f, 1.3f, true);
     }
 
     public void SceneChange1()
     {
-        Debug.Log("1");
-        SceneManager.LoadScene(1);
+        //  1초후에 넘어감
+        StartCoroutine(WaitSecondAndLoadScene());
     }
 
     public void SceneChange(string sceneName) {
-        Debug.Log("2");
+        
         SceneManager.LoadScene(sceneName);
+    }
+
+    IEnumerator WaitSecondAndLoadScene()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene(1);
     }
 
 }
