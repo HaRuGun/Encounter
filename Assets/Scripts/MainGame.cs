@@ -292,13 +292,13 @@ public class MainGame : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                nowQuestion = Random.Range(0, 34);
+                nowQuestion = Random.Range(0, 30);
                 break;
             case 1:
-                nowQuestion = Random.Range(34, 67);
+                nowQuestion = Random.Range(30, 60);
                 break;
             case 2:
-                nowQuestion = Random.Range(67, 91);
+                nowQuestion = Random.Range(60, 90);
                 break;
         }
         ForeignerText.text = listQaA[nowQuestion].questionText;
