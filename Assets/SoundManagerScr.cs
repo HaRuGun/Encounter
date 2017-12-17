@@ -5,8 +5,8 @@ using UnityEngine;
 public class SoundManagerScr : MonoBehaviour {
 
     public static SoundManagerScr instance = null;
-    public AudioSource efxSource;
     public AudioSource musicSource;
+    public AudioSource efxSource;
     public float lowPitchRange = 0.95f;
     public float highPitchRange = 1.05f;
 
@@ -59,7 +59,8 @@ public class SoundManagerScr : MonoBehaviour {
     }
     public void PlayGameoverAudio()
     {
-        MusicPlaySingle(GameoverAudio);
+        musicSource.Stop();
+        EfxPlaySingle(GameoverAudio);
     }
     public void PlayEndingAudio()
     {
@@ -69,41 +70,43 @@ public class SoundManagerScr : MonoBehaviour {
     //  효과음악 off
     public void PlayButtonAudio()
     {
-        MusicPlaySingle(ButtonAudio);
+        EfxPlaySingle(ButtonAudio);
     }
     public void PlayTrueAudio()
     {
-        MusicPlaySingle(TrueAudio);
+        EfxPlaySingle(TrueAudio);
     }
     public void PlayFalseAudio()
     {
-        MusicPlaySingle(FalseAudio);
+        EfxPlaySingle(FalseAudio);
     }
     public void PlayHintAudio()
     {
-        MusicPlaySingle(HintAudio);
+        EfxPlaySingle(HintAudio);
     }
     public void PlayStartInGameAudio()
     {
-        MusicPlaySingle(StartInGameAudio);
+        EfxPlaySingle(StartInGameAudio);
     }
     public void PlayEndInGameAudio()
     {
-        MusicPlaySingle(EndInGameAudio);
+        EfxPlaySingle(EndInGameAudio);
     }
     public void PlayResultGameAudio1()
     {
-        MusicPlaySingle(ResultGameAudio1);
+        EfxPlaySingle(ResultGameAudio1);
     }
     public void PlayResultGameAudio2()
     {
-        MusicPlaySingle(ResultGameAudio2);
+        EfxPlaySingle(ResultGameAudio2);
     }
 
 
 
     // Update is called once per frame
-    void MusicPlaySingle(AudioClip clip) {
+    void MusicPlaySingle(AudioClip clip)
+    {
+        musicSource.Stop();
         musicSource.clip = clip;
         musicSource.Play();
         Debug.Log("2");

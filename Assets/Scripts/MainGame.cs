@@ -21,9 +21,19 @@ public class MainGame : MonoBehaviour
     public GameObject Timer;
     public GameObject HintButton;
 
+    public GameObject HintChecker1;
+    public GameObject HintChecker2;
+    public GameObject HintChecker3;
+
     public GameObject CorrectCircle;
     public GameObject WrongCircle;
     public GameObject WrongCircle2;
+
+    public GameObject ReadyOverlay;
+    public GameObject GoOverlay;
+    public GameObject TimeOverlay;
+    public GameObject GameOverlay;
+    //public GameObject ResultDataKeeper;
 
     public GameObject FreindshipHandle;
     public Slider FriendshipSlider;
@@ -55,10 +65,18 @@ public class MainGame : MonoBehaviour
     public float currentTime;
     public float freindship;
     public int hint;
+    public bool hintUse;
+
     public bool checkAnimation;
     public bool checkMoving;
-
+    
     public float checkTime;
+
+    public int CorrectCount;
+    public int WrongCount;
+    public ResultData resultData;
+
+    public bool IsGameStart;
 
     public void Awake()
     {
@@ -74,15 +92,45 @@ public class MainGame : MonoBehaviour
         currentTime = 5.0f;
         freindship = 50.0f;
         hint = 3;
+        hintUse = false;
         checkTime = 3.0f;
 
         checkAnimation = false;
         checkMoving = false;
 
+        IsGameStart = true;
+
         AnswerScript = Answer.GetComponent<Answer>();
 
-        Ask();
+        StartCoroutine(GameStart());
+
         TimerSlider = Timer.GetComponent<Slider>();
+
+        resultData = new ResultData();
+
+    }
+
+    IEnumerator GameStart()
+    {
+        checkAnimation = true;
+        checkMoving = true;
+
+        SoundManagerScr.instance.PlayIngameAudio();
+
+        ReadyOverlay.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        ReadyOverlay.SetActive(false);
+        GoOverlay.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        GoOverlay.SetActive(false);
+
+        checkAnimation = false;
+        checkMoving = false;
+
+        SoundManagerScr.instance.PlayStartInGameAudio();
+        Ask();
+
+        StopCoroutine(GameStart());
     }
 
     public void Update()
@@ -95,6 +143,9 @@ public class MainGame : MonoBehaviour
     public void AddFriednShip()
     {
         freindship += 10.0f;
+        if (freindship >= 100.0f)
+            freindship = 100.0f;
+
         FriendshipSlider.value = freindship;
         FriendshipText.text = System.Convert.ToInt32(freindship).ToString() + "%";
 
@@ -123,12 +174,39 @@ public class MainGame : MonoBehaviour
 
     public void HintClick()
     {
-        if (hint <= 0)
+        if (hint <= 0 || hintUse)
             return;
 
+        SoundManagerScr.instance.PlayHintAudio();
+
         hint -= 1;
-        HintButton.GetComponentInChildren<Text>().text = hint.ToString();
-        
+        hintUse = true;
+
+        if (hint == 0)
+        {
+            HintChecker1.SetActive(false);
+            HintChecker2.SetActive(false);
+            HintChecker3.SetActive(false);
+        }
+        if (hint == 1)
+        {
+            HintChecker1.SetActive(true);
+            HintChecker2.SetActive(false);
+            HintChecker3.SetActive(false);
+        }
+        else if (hint == 2)
+        {
+            HintChecker1.SetActive(true);
+            HintChecker2.SetActive(true);
+            HintChecker3.SetActive(false);
+        }
+        else if (hint == 3)
+        {
+            HintChecker1.SetActive(true);
+            HintChecker2.SetActive(true);
+            HintChecker3.SetActive(true);
+        }
+
         int rand = Random.Range(0, 3);
         while(questionArr[rand] == 2)
             rand = Random.Range(0, 3);
@@ -155,13 +233,9 @@ public class MainGame : MonoBehaviour
 
     public void CheckFreindship()
     {
-        if (freindship >= 100)
+        if (freindship <= 0)
         {
-            //GameClear
-        }
-        else if (freindship <= 0)
-        {
-            //GameOver
+            GameFinish(false);
         }
     }
 
@@ -182,13 +256,13 @@ public class MainGame : MonoBehaviour
 
         if (totalTime <= 0.0f)
         {
-            //GameOver
+            GameFinish(true);
         }
     }
 
     public void CheckAnswer()
     {
-        if (checkAnimation)
+        if (checkAnimation || checkMoving)
             return;
 
         if (AnswerScript.choice == 4)
@@ -213,6 +287,7 @@ public class MainGame : MonoBehaviour
             StartCoroutine(ChangeForeigner());
         prevDiff = difficulty;
 
+        hintUse = false;
 
         switch (difficulty)
         {
@@ -271,6 +346,7 @@ public class MainGame : MonoBehaviour
 
     public void CorrectAnswer()
     {
+        SoundManagerScr.instance.PlayTrueAudio();
         StartCoroutine(Correct());
     }
 
@@ -296,12 +372,14 @@ public class MainGame : MonoBehaviour
         AnswerScript.Reset();
         Ask();
 
+        CorrectCount += 1;
         Foreigner.GetComponent<Foreigner>().FaceNormal();
         checkAnimation = false;
     }
 
     public void WrongAnswer()
     {
+        SoundManagerScr.instance.PlayFalseAudio();
         StartCoroutine(Wrong());
     }
 
@@ -338,7 +416,8 @@ public class MainGame : MonoBehaviour
         }
         AnswerScript.Reset();
         Ask();
-        
+
+        WrongCount += 1;
         Foreigner.GetComponent<Foreigner>().FaceNormal();
         checkAnimation = false;
     }
@@ -348,18 +427,56 @@ public class MainGame : MonoBehaviour
         checkMoving = true;
         Foreigner.GetComponent<Animator>().enabled = true;
 
-        Foreigner.GetComponent<Animator>().Play("Foreigner2");
+        if (!IsGameStart)
+            Foreigner.GetComponent<Animator>().Play("Foreigner2");
         yield return new WaitForSeconds(1.0f);
 
         Foreigner.GetComponent<Foreigner>().SetChar(difficulty);
-        
-        Foreigner.GetComponent<Animator>().Play("Foreigner1");
+
+        if (!IsGameStart)
+            Foreigner.GetComponent<Animator>().Play("Foreigner1");
         yield return new WaitForSeconds(1.0f);
 
         Foreigner.GetComponent<Animator>().enabled = false;
         checkMoving = false;
 
+        
+        IsGameStart = false;
+
         StopCoroutine(ChangeForeigner());
+    }
+
+    public void GameFinish(bool isTimeSet)
+    {
+        checkAnimation = true;
+        checkMoving = true;
+
+        resultData.CorrectCount = this.CorrectCount;
+        resultData.WrongCount = this.WrongCount;
+        resultData.FreindshipScore = freindship;
+        resultData.TimeOver = isTimeSet;
+
+        SoundManagerScr.instance.PlayEndInGameAudio();
+        if (isTimeSet)
+            TimeOverlay.SetActive(true);
+        else
+            GameOverlay.SetActive(true);
+
+        StartCoroutine(GameOverCor());
+    }
+
+    IEnumerator GameOverCor()
+    {
+        yield return new WaitForSeconds(1.0f);
+        TimeOverlay.SetActive(false);
+        GameOverlay.SetActive(false);
+        
+        ResultDataKeeper.instance.resultData = this.resultData;
+        SceneManagerScr.instance.SceneChange("Scene02");
+
+        checkAnimation = false;
+        checkMoving = false;
+        StopCoroutine(GameOverCor());
     }
 
     public void XmlToList(XmlDocument xmlDoc)

@@ -295,8 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43863bcf978046c40b7cc8c5c019b2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  efxSource: {fileID: 1272515921}
-  musicSource: {fileID: 1272515920}
+  musicSource: {fileID: 1272515921}
+  efxSource: {fileID: 1272515920}
   lowPitchRange: 0.95
   highPitchRange: 1.05
   TitleAudio: {fileID: 8300000, guid: ee6704cc7550c5943bf7df97590125ae, type: 3}
@@ -417,7 +417,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -709,7 +709,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2081987727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.5, y: -494.50003, z: 0}
+  m_LocalPosition: {x: 0, y: -494.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1531444108}
@@ -717,8 +717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 20.5, y: -494.5}
-  m_SizeDelta: {x: 357.9, y: 112.3}
+  m_AnchoredPosition: {x: 0, y: -494.5}
+  m_SizeDelta: {x: 489, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2081987729
 MonoBehaviour:

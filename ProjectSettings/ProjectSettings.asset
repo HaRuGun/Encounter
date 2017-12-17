@@ -7,11 +7,11 @@ PlayerSettings:
   productGUID: 248be5098d078574ca4d94877e7d329b
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 1
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: GAZUA
   productName: Encounter
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -147,7 +147,8 @@ PlayerSettings:
   resolutionScalingMode: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.GAZUA.Encounter
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
