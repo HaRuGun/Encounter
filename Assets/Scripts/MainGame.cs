@@ -89,11 +89,11 @@ public class MainGame : MonoBehaviour
         prevDiff = difficulty;
 
         totalTime = 60.0f;
-        currentTime = 5.0f;
+        currentTime = 10.0f;
         freindship = 50.0f;
         hint = 3;
         hintUse = false;
-        checkTime = 3.0f;
+        checkTime = 10.0f;
 
         checkAnimation = false;
         checkMoving = false;
